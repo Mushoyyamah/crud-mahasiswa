@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Daftar Mahasiswa{% endblock %}
+
+{% block content %}
+<div class="heading">
+    <div>
+        <h1>Daftar Mahasiswa</h1>
+        <p>Kelola data mahasiswa dalam satu tempat.</p>
+    </div>
+    <a class="button primary"
+       href="{{ url_for('tambah') }}">+ Tambah Mahasiswa</a>
+</div>
+
+<div class="panel">
+    {% if mahasiswa %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>NIM</th>
+                    <th>Nama</th>
+                    <th>Program Studi</th>
+                    <th>Angkatan</th>
+                    <th>IPK</th>
+                    <th>Lama Studi</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in mahasiswa %}
+                <tr>
+                    <td>{{ m.nim }}</td>
+                    <td>{{ m.nama }}</td>
+                    <td>{{ m.program_studi }}</td>
+                    <td>{{ m.angkatan }}</td>
+                    <td>{{ "%.2f"|format(m.ipk) }}</td>
+                    <td>{{ m.lama_studi }} tahun</td>
+                    <td>
+                        <div class="actions">
+                            <a class="button small"
+                               href="{{ url_for('detail', nim=m.nim) }}">
+                                Detail
+                            </a>
+                            <a class="button small"
+                               href="{{ url_for('edit', nim=m.nim) }}">
+                                Edit
+                            </a>
+                            <form method="post"
+                                  action="{{ url_for('hapus', nim=m.nim) }}"
+                                  onsubmit="return confirm('Hapus mahasiswa ini?')">
+                                <button class="button small danger"
+                                        type="submit">Hapus</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p class="note">
+        Jumlah mahasiswa: {{ mahasiswa|length }}.
+        Tahun sekarang: {{ tahun_sekarang }}.
+    </p>
+    {% else %}
+    <div class="empty">
+        <h2>Belum ada data mahasiswa</h2>
+        <p>Silakan tambahkan data mahasiswa pertama.</p>
+        <a class="button primary"
+           href="{{ url_for('tambah') }}">Tambah Mahasiswa</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

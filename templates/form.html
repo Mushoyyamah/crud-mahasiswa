@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}
+    {% if mode == "tambah" %}Tambah Mahasiswa{% else %}Edit Mahasiswa{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="heading">
+    <div>
+        <h1>
+            {% if mode == "tambah" %}
+                Tambah Mahasiswa
+            {% else %}
+                Edit Mahasiswa
+            {% endif %}
+        </h1>
+        <p>Semua field wajib diisi.</p>
+    </div>
+    <a class="button" href="{{ url_for('index') }}">Kembali</a>
+</div>
+
+<div class="panel form-panel">
+    <form method="post">
+        <label for="nim">NIM</label>
+        <input id="nim" name="nim" type="number" min="1"
+               value="{{ mahasiswa.get('nim', '') }}"
+               {% if mode == "edit" %}readonly{% else %}required{% endif %}>
+
+        <label for="nama">Nama</label>
+        <input id="nama" name="nama" type="text"
+               value="{{ mahasiswa.get('nama', '') }}" required>
+
+        <label for="program_studi">Program Studi</label>
+        <input id="program_studi" name="program_studi" type="text"
+               value="{{ mahasiswa.get('program_studi', '') }}" required>
+
+        <label for="angkatan">Angkatan</label>
+        <input id="angkatan" name="angkatan" type="number"
+               min="1900" max="{{ tahun_sekarang }}"
+               value="{{ mahasiswa.get('angkatan', '') }}" required>
+
+        <label for="ipk">IPK</label>
+        <input id="ipk" name="ipk" type="number"
+               min="0" max="4" step="0.01"
+               value="{{ mahasiswa.get('ipk', '') }}" required>
+        <small>Rentang IPK adalah 0,00 sampai 4,00.</small>
+
+        <div class="form-actions">
+            <button class="button primary" type="submit">Simpan</button>
+            <a class="button" href="{{ url_for('index') }}">Batal</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
